@@ -1,4 +1,4 @@
-package Task2;
+package Task1;
 
 public class BagStruct {
     private final int _capacity;
