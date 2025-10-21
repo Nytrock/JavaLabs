@@ -1,4 +1,4 @@
-package Task1;
+package Point1;
 
 import java.util.Map;
 import java.util.HashMap;

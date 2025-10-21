@@ -1,4 +1,4 @@
-package Task4;
+package Point4;
 
 import java.util.Scanner;
 

@@ -1,4 +1,4 @@
-package Task2;
+package Point2;
 
 import javax.swing.JOptionPane;
 
