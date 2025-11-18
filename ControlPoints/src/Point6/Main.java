@@ -1,5 +1,7 @@
 package Point6;
 
+import java.util.Arrays;
+
 interface Ingredients {
     String[] getIngredients();
 }
@@ -8,17 +10,35 @@ interface CookingTime {
     int getCookingTime();
 }
 
+enum Difficulty {
+    Easy("Лёгкий"),
+    Normal("Средний"),
+    Hard("Сложный");
+
+    private final String name;
+
+    Difficulty(String name){
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+}
+
 abstract class Recipe implements Ingredients, CookingTime {
     protected String name;
     protected String[] ingredients;
     protected int calories;
     protected int cookingTime;
+    protected Difficulty difficulty;
 
-    public Recipe(String name, String[] ingredients, int calories, int cookingTime) {
+    public Recipe(String name, String[] ingredients, int calories, Difficulty difficulty, int cookingTime) {
         this.name = name;
         this.ingredients = ingredients;
         this.calories = calories;
         this.cookingTime = cookingTime;
+        this.difficulty = difficulty;
     }
 
     public String getName() {
@@ -39,12 +59,26 @@ abstract class Recipe implements Ingredients, CookingTime {
         return calories;
     }
 
+    public String getDifficulty() {
+        return difficulty.getName();
+    }
+
+    public void printInfo(){
+        System.out.println(getType() + ':');
+        System.out.println("- Название: " + getName());
+        System.out.println("- Ингредиенты: " + Arrays.toString(getIngredients()));
+        System.out.println("- Время приготовления: " + getCookingTime());
+        System.out.println("- Сложность: " + getDifficulty());
+        System.out.println("- Калорийность: " + getCalories());
+        System.out.println();
+    }
+
     public abstract String getType();
 }
 
 class FirstDish extends Recipe {
-    public FirstDish(String name, String[] ingredients, int calories, int cookingTime) {
-        super(name, ingredients, calories, cookingTime);
+    public FirstDish(String name, String[] ingredients, int calories, Difficulty difficulty, int cookingTime) {
+        super(name, ingredients, calories, difficulty, cookingTime);
     }
 
     @Override
@@ -54,8 +88,8 @@ class FirstDish extends Recipe {
 }
 
 class SecondDish extends Recipe {
-    public SecondDish(String name, String[] ingredients, int calories, int cookingTime) {
-        super(name, ingredients, calories, cookingTime);
+    public SecondDish(String name, String[] ingredients, int calories, Difficulty difficulty, int cookingTime) {
+        super(name, ingredients, calories, difficulty, cookingTime);
     }
 
     @Override
@@ -65,8 +99,8 @@ class SecondDish extends Recipe {
 }
 
 class Dessert extends Recipe {
-    public Dessert(String name, String[] ingredients, int calories, int cookingTime) {
-        super(name, ingredients, calories, cookingTime);
+    public Dessert(String name, String[] ingredients, int calories, Difficulty difficulty, int cookingTime) {
+        super(name, ingredients, calories, difficulty, cookingTime);
     }
 
     @Override
@@ -77,22 +111,35 @@ class Dessert extends Recipe {
 
 public class Main {
     public static void main(String[] args) {
-        Recipe[] recipes = new Recipe[2];
-        recipes[0] = new FirstDish(
-                "Щи",
-                new String[] {"капуста", "картофель", "мясо"},
-                150,
-                60
-        );
-        recipes[1] = new SecondDish(
-                "Жареная курица",
-                new String[] {"куриное филе", "специи"},
-                200,
-                30
-        );
+        Recipe[] recipes = {
+                new FirstDish(
+                        "Щи",
+                        new String[] {"капуста", "картофель", "мясо"},
+                        150,
+                        Difficulty.Easy,
+                        60
+                ),
+                new SecondDish(
+                        "Жареная курица",
+                        new String[] {"куриное филе", "специи"},
+                        200,
+                        Difficulty.Hard,
+                        30
+                ),
+                new Dessert(
+                        "Наполеон",
+                        new String[] {"слоёное тесто", "крем"},
+                        300,
+                        Difficulty.Normal,
+                        120
+                )
+        };
 
         int avgCalories = 0;
         int avgTime = 0;
+
+        for (Recipe recipe : recipes)
+            recipe.printInfo();
 
         System.out.println("Популярные рецепты:");
         for (Recipe recipe : recipes) {
@@ -109,4 +156,3 @@ public class Main {
         System.out.println("Средняя калорийность: " + avgCalories + " ккал");
     }
 }
-
